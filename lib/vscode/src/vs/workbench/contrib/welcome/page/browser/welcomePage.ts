@@ -42,7 +42,7 @@ import { joinPath } from 'vs/base/common/resources';
 import { IRecentlyOpened, isRecentWorkspace, IRecentWorkspace, IRecentFolder, isRecentFolder, IWorkspacesService } from 'vs/platform/workspaces/common/workspaces';
 import { CancellationToken } from 'vs/base/common/cancellation';
 import { IHostService } from 'vs/workbench/services/host/browser/host';
-import { IProductService } from 'vs/platform/product/common/productService';
+// import { IProductService } from 'vs/platform/product/common/productService';
 import { IEditorOptions } from 'vs/platform/editor/common/editor';
 import { IWorkbenchLayoutService } from 'vs/workbench/services/layout/browser/layoutService';
 import { IViewletService } from 'vs/workbench/services/viewlet/browser/viewlet';
@@ -412,7 +412,7 @@ class WelcomePage extends Disposable {
 		@ILifecycleService lifecycleService: ILifecycleService,
 		@ITelemetryService private readonly telemetryService: ITelemetryService,
 		@IHostService private readonly hostService: IHostService,
-		@IProductService private readonly productService: IProductService,
+		// @IProductService private readonly productService: IProductService,
 
 	) {
 		super();
@@ -450,7 +450,7 @@ class WelcomePage extends Disposable {
 
 		const prodName = container.querySelector('.welcomePage .title .caption') as HTMLElement;
 		if (prodName) {
-			prodName.textContent = `code-server v${this.productService.codeServerVersion}`;
+			prodName.textContent = `Advanced IDE for Quantum Computing (AIDE-QC)`;
 		}
 
 		recentlyOpened.then(({ workspaces }) => {

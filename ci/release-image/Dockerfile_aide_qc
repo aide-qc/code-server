@@ -1,0 +1,26 @@
+from qcor/code-server-base
+
+RUN apt-get update && apt-get install -y qcor \
+  && rm -rf /var/lib/apt/lists/* \
+  && python3 -m pip install ipopo --user \
+  && adduser --gecos '' --disabled-password coder && \
+  echo "coder ALL=(ALL) NOPASSWD:ALL" >> /etc/sudoers.d/nopasswd \
+  && ARCH="$(dpkg --print-architecture)" && \
+    curl -fsSL "https://github.com/boxboat/fixuid/releases/download/v0.5/fixuid-0.5-linux-$ARCH.tar.gz" | tar -C /usr/local/bin -xzf - && \
+    chown root:root /usr/local/bin/fixuid && \
+    chmod 4755 /usr/local/bin/fixuid && \
+    mkdir -p /etc/fixuid && \
+    printf "user: coder\ngroup: coder\n" > /etc/fixuid/config.yml
+
+COPY release-packages/code-server*.deb /tmp/
+COPY ci/release-image/entrypoint.sh /usr/bin/entrypoint.sh
+RUN dpkg -i /tmp/code-server*$(dpkg --print-architecture).deb && rm /tmp/code-server*.deb
+EXPOSE 8080
+ENV PYTHONPATH "${PYTHONPATH}:/usr/local/aideqc/qcor"
+USER 1000
+ENV USER=coder
+WORKDIR /home/coder
+RUN git clone https://github.com/ornl-qci/qcor && cp -r qcor/examples cpp-examples \
+  && cp -r qcor/python/examples py-examples && cp -r qcor/mlir/parsers/qasm3/examples mlir-qasm3-examples && rm -rf qcor \
+  && python3 -m pip install ipopo --user
+ENTRYPOINT ["/usr/bin/entrypoint.sh", "--bind-addr", "0.0.0.0:8080", "--auth", "none", "."]
