@@ -32,3 +32,7 @@ RUN echo 'deb http://deb.debian.org/debian testing main' | tee /etc/apt/sources.
   && sed -i 's/#!\/usr\/bin\/python3/#!\/usr\/bin\/python3.9/' /usr/bin/lsb_release \
   && sed -i "s/# en_US.UTF-8/en_US.UTF-8/" /etc/locale.gen \
   && locale-gen 
+
+COPY release-packages/code-server*.deb /tmp/
+COPY ci/release-image/entrypoint.sh /usr/bin/entrypoint.sh
+RUN dpkg -i /tmp/code-server*$(dpkg --print-architecture).deb && rm /tmp/code-server*.deb
