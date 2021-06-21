@@ -23,5 +23,5 @@ RUN dotnet new -i Microsoft.Quantum.ProjectTemplates
 
 RUN git clone https://github.com/ornl-qci/qcor && cp -r qcor/examples cpp-examples \
   && cp -r qcor/python/examples py-examples && cp -r qcor/mlir/parsers/qasm3/examples mlir-qasm3-examples && rm -rf qcor \
-  && python3 -m pip install ipopo --user
+  && python3 -m pip install ipopo numpy qsearch --user
 ENTRYPOINT ["/usr/bin/entrypoint.sh", "--bind-addr", "0.0.0.0:8080", "--auth", "none", "."]
