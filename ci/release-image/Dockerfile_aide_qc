@@ -19,6 +19,7 @@ ENV USER=coder
 WORKDIR /home/coder
 
 # Install Q# SDK
+RUN dotnet nuget add source "https://pkgs.dev.azure.com/ms-quantum-public/Microsoft Quantum (public)/_packaging/alpha/nuget/v3/index.json" -n qdk-alpha
 RUN dotnet new -i Microsoft.Quantum.ProjectTemplates
 
 RUN git clone https://github.com/ornl-qci/qcor && cp -r qcor/examples cpp-examples \
